@@ -48,7 +48,7 @@ class Handler(FileSystemEventHandler):
         elif (type(event) is FileDeletedEvent) and event.src_path.startswith("md" + os.path.sep):
             logging.info("File deleted! Path: {path}".format(path=event.src_path))
             if os.path.exists(event.src_path):
-                os.remove(event.src_path.replace("/md/", "/pages/"))
+                os.remove(event.src_path.replace(os.path.sep + "md" + os.path.sep, os.path.sep + "pages" + os.path.sep))
         elif (type(event) is FileModifiedEvent) and len(event.src_path) >= len("template.html") and event.src_path[len(event.src_path)-len("template.html"):] == "template.html":
             logging.info("Template changed, reprocessing all files.")
             for (dirpath, dirnames, filenames) in walk(mypath):
