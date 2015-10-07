@@ -34,8 +34,6 @@ def process_files():
         logging.info(x)
         name = x.replace(cwd, "")
         htmlname = join("pages", name.replace(".md", ".html"))
-        if name == "index.md":
-            htmlname = "index.html"
         ospath = os.path.split(join(os.getcwd(), htmlname))[0]
         if not os.path.exists(ospath):
             os.makedirs(ospath)
@@ -45,10 +43,12 @@ def process_files():
             props = dict(item.split("=") for item in split[0].split("\n"))
             mark = mistune.markdown(split[1])
             with open(htmlname, 'w') as w:
+                logging.info("Writing to {file}".format(file=htmlname))
                 w.write(template.replace("{TITLE}", props["TITLE"].replace("\"", "")).replace("{BODY}", mark))
 
 class handler(FileSystemEventHandler):
     def on_any_event(this, event):
+        print(event)
         process_files()
 
 if __name__ == "__main__":
