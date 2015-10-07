@@ -41,7 +41,7 @@ def process_files():
             os.makedirs(ospath)
         with open(x, 'r') as r:
             raw = r.read()
-            split = raw.split("~#~")
+            split = raw.split("~#~\n")
             props = dict(item.split("=") for item in split[0].split("\n"))
             mark = mistune.markdown(split[1])
             with open(htmlname, 'w') as w:

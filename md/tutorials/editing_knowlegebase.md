@@ -1,4 +1,5 @@
-TITLE="How to edit the knowlagebase"~#~ ###Requirements:
+TITLE="How to edit the knowlagebase"~#~
+###Requirements:
 
 - Python 3
 - Pip modules:
