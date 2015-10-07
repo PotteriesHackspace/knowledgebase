@@ -21,7 +21,7 @@ def process_file(file):
         return
     with open("template.html", 'r') as r:
         template = r.read()
-    name = file.replace("md/", "pages/")
+    name = file.replace("md" + os.path.sep, "pages" + os.path.sep)
     htmlname = name.replace(".md", ".html")
     ospath = os.path.split(join(os.getcwd(), htmlname))[0]
     if not os.path.exists(ospath):
