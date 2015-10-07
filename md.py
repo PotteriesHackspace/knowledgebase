@@ -7,8 +7,6 @@
 import os
 from os.path import join
 from os import walk
-import re
-
 import time
 import logging
 
