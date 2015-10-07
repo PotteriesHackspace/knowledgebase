@@ -39,8 +39,8 @@ def process_file(file):
             w.write(template.replace("{TITLE}", props["TITLE"].replace("\"", "")).replace("{BODY}", mark))
 
 
-class handler(FileSystemEventHandler):
-    def on_any_event(this, event):
+class Handler(FileSystemEventHandler):
+    def on_any_event(self, event):
         if type(event) is FileModifiedEvent or type(event) is FileCreatedEvent:
             logging.info("File created or changed! Path: {path}".format(path=event.src_path))
             process_file(event.src_path)
@@ -55,7 +55,7 @@ if __name__ == "__main__":
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
     observer = Observer()
-    observer.schedule(handler(), mypath, recursive=True)
+    observer.schedule(Handler(), mypath, recursive=True)
     observer.start()
     try:
         while True:
