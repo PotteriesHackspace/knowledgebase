@@ -1,4 +1,4 @@
-TITLE="How to edit the knowlagebase"~#~
+TITLE="How to edit the knowledgebase"~#~
 ###Requirements:
 
 - Python 3
@@ -11,7 +11,7 @@ TITLE="How to edit the knowlagebase"~#~
 Clone the repo 
 > git clone git@github.com:PotteriesHackspace/knowledgebase.git
 
-> cd knowlagebase/
+> cd knowledgebase/
 
 ###Step two:
 

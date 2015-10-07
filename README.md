@@ -1,3 +1,3 @@
-Potteries Hackspace Knowlagebase
+Potteries Hackspace knowledgebase
 
 Hosted [here](http://wiki.potterieshackspace.org)
