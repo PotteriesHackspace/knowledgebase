@@ -17,6 +17,16 @@ from watchdog.events import FileSystemEventHandler, FileModifiedEvent, FileCreat
 mypath = "md"
 
 
+def process_headers(string):
+    split = string.split("~#~\n")
+    props = dict(item.split("=") for item in split[0].split("\n"))
+    for x in props:
+        props[x] = props[x].replace("\"", "")
+    props["TEXT"] = split[1]
+    logging.info("Properties : {props}".format(props=props))
+    return props
+
+
 def process_file(file):
     if file[len(file) - 3:len(file)] != ".md":
         return
@@ -29,27 +39,28 @@ def process_file(file):
         os.makedirs(ospath)
     with open(file, 'r') as r:
         raw = r.read()
-        split = raw.split("~#~\n")
-        if len(split) == 1:
+        props = process_headers(raw)
+        if "TITLE" not in props:
             logging.info("New file without header detected, not processing")
             return
-        props = dict(item.split("=") for item in split[0].split("\n"))
-        mark = mistune.markdown(split[1])
+        mark = mistune.markdown(props["TEXT"])
         with open(htmlname, 'w') as w:
             logging.info("Writing to {file}".format(file=htmlname))
-            w.write(template.replace("{TITLE}", props["TITLE"].replace("\"", "")).replace("{BODY}", mark))
+            w.write(template.replace("{TITLE}", props["TITLE"]).replace("{BODY}", mark))
 
 
 class Handler(FileSystemEventHandler):
     def on_any_event(self, event):
-        if (type(event) is FileModifiedEvent or type(event) is FileCreatedEvent) and event.src_path.startswith("md" + os.path.sep):
+        mdpath = "." + os.path.sep + "md" + os.path.sep
+        if (type(event) is FileModifiedEvent or type(event) is FileCreatedEvent) and event.src_path.startswith(mdpath):
             logging.info("File created or changed! Path: {path}".format(path=event.src_path))
             process_file(event.src_path)
-        elif (type(event) is FileDeletedEvent) and event.src_path.startswith("md" + os.path.sep):
+        elif (type(event) is FileDeletedEvent) and event.src_path.startswith(mdpath):
             logging.info("File deleted! Path: {path}".format(path=event.src_path))
             if os.path.exists(event.src_path):
                 os.remove(event.src_path.replace(os.path.sep + "md" + os.path.sep, os.path.sep + "pages" + os.path.sep))
-        elif (type(event) is FileModifiedEvent) and len(event.src_path) >= len("template.html") and event.src_path[len(event.src_path)-len("template.html"):] == "template.html":
+        elif (type(event) is FileModifiedEvent) and len(event.src_path) >= len("template.html") and event.src_path[len(
+                event.src_path) - len("template.html"):] == "template.html":
             logging.info("Template changed, reprocessing all files.")
             for (dirpath, dirnames, filenames) in walk(mypath):
                 for x in filenames:
