@@ -19,6 +19,8 @@ mypath = "md"
 
 def process_headers(string):
     split = string.split("~#~\n")
+    if len(split) == 1:
+        return {}
     props = dict(item.split("=") for item in split[0].split("\n"))
     for x in props:
         props[x] = props[x].replace("\"", "")
