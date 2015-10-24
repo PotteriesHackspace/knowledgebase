@@ -13,3 +13,4 @@ Current commands:
 Other features:
 
 - Push notifications for github
+- Notifications on new dhcp leases on the hackspaces LAN
